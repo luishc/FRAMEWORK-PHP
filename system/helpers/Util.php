@@ -38,53 +38,6 @@ class Util
 	} 
 
 	/**
-	 * [filterToQuery description]
-	 * @param  array  $filters [description]
-	 * @param  string $context [description]
-	 * @return [type]          [description]
-	 */
-	public static function filterToQuery( $filters = array(), $context = '' )
-	{
-		$ret = array() ;
-
-		$context = empty( $context ) ? '' : "{$context}." ;
-
-		if( is_array( $filters ) )
-		{
-			foreach( $filters as $type => $filter )
-			{
-				foreach( $filter as $k => $v )
-				{
-					switch( strval( $type ) )
-					{
-						case '=':
-							if( ! empty( $v ) || $v === 0 )
-								$ret[] = array( "{$context}{$k} = ?", $v ) ;
-						break ;
-						
-						case '%':
-							$ret[] = array( "{$context}{$k} like ?", "%{$v}%" ) ;
-						break ;
-						
-						case '-':
-							if( ! empty( $v['Min'] ) && ! empty( $v['Max'] ) )
-								$ret[] = array( "{$context}{$k} between {$v['Min']} and {$v['Max']}", null ) ;
-							
-							elseif( ! empty( $v['Min'] ) )
-								$ret[] = array( "{$context}{$k} >= {$v['Min']}", null ) ;
-							
-							elseif( ! empty( $v['Max'] ) )
-								$ret[] = array( "{$context}{$k} <= {$v['Max']}", null ) ;
-						break ;
-					}
-				}
-			}
-		}
-
-		return $ret ;
-	}
-
-	/**
 	 * Transforma um str em parâmetro de url amigável
 	 * @param  String $str Str de entrada
 	 * @return String      Str pronta para url
